@@ -42,5 +42,5 @@ public class ReflectTest extends AppCompatActivity {
                 Log.i(TAG,"ReflectUtil error:"+e.toString());
             }
         }
-    }
+    }//end reflect
 }

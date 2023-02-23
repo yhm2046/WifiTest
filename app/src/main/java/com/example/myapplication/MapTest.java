@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -37,5 +38,23 @@ public class MapTest extends AppCompatActivity {
             int age = Optional.ofNullable(map.get("John")).orElse(0);
             Log.i(TAG,"John's age is: " + age);
         }
+        deepCopy();
+    }//end onCreate
+
+    /**
+     * 深拷贝复制map的数据
+     * reference: <a href="https://www.cnblogs.com/Marydon20170307/p/9132042.html">...</a>
+     */
+    void deepCopy(){
+        Map<String,String> map1 = new HashMap<String,String>();
+        map1.put("a","Alpha");
+        map1.put("b","Bravo");
+        Map<String,String> map2 = new HashMap<String,String>();
+        map2.putAll(map1);
+        Map<String, String> map3 = new HashMap<>();
+        map3.put("c", map1.get("a"));
+        Log.i(TAG,"map1:" + map1);
+        Log.i(TAG,"map2:" + map2);
+        Log.i(TAG,"map3:" + map3);
     }
 }
