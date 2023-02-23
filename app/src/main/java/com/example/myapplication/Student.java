@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable {
     private int age;
     private String name;
     private String sex;
