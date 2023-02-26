@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.DatabaseStatement;
 /** 
  * DAO for table "STUDENT".
 */
-public class StudentDao extends AbstractDao<Student, Void> {
+public class StudentDao extends AbstractDao<Student, Long> {
 
     public static final String TABLENAME = "STUDENT";
 
@@ -22,8 +22,11 @@ public class StudentDao extends AbstractDao<Student, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Sex = new Property(0, String.class, "sex", false, "SEX");
-        public final static Property SId = new Property(1, int.class, "sId", false, "S_ID");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property Age = new Property(2, int.class, "age", false, "AGE");
+        public final static Property Sex = new Property(3, String.class, "sex", false, "SEX");
+        public final static Property SId = new Property(4, int.class, "sId", false, "S_ID");
     }
 
 
@@ -39,8 +42,11 @@ public class StudentDao extends AbstractDao<Student, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"STUDENT\" (" + //
-                "\"SEX\" TEXT," + // 0: sex
-                "\"S_ID\" INTEGER NOT NULL );"); // 1: sId
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
+                "\"NAME\" TEXT UNIQUE ," + // 1: name
+                "\"AGE\" INTEGER NOT NULL ," + // 2: age
+                "\"SEX\" TEXT," + // 3: sex
+                "\"S_ID\" INTEGER NOT NULL );"); // 4: sId
     }
 
     /** Drops the underlying database table. */
@@ -53,59 +59,90 @@ public class StudentDao extends AbstractDao<Student, Void> {
     protected final void bindValues(DatabaseStatement stmt, Student entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
+        String name = entity.getName();
+        if (name != null) {
+            stmt.bindString(2, name);
+        }
+        stmt.bindLong(3, entity.getAge());
+ 
         String sex = entity.getSex();
         if (sex != null) {
-            stmt.bindString(1, sex);
+            stmt.bindString(4, sex);
         }
-        stmt.bindLong(2, entity.getSId());
+        stmt.bindLong(5, entity.getSId());
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, Student entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
+        String name = entity.getName();
+        if (name != null) {
+            stmt.bindString(2, name);
+        }
+        stmt.bindLong(3, entity.getAge());
+ 
         String sex = entity.getSex();
         if (sex != null) {
-            stmt.bindString(1, sex);
+            stmt.bindString(4, sex);
         }
-        stmt.bindLong(2, entity.getSId());
+        stmt.bindLong(5, entity.getSId());
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public Student readEntity(Cursor cursor, int offset) {
         Student entity = new Student( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // sex
-            cursor.getInt(offset + 1) // sId
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
+            cursor.getInt(offset + 2), // age
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // sex
+            cursor.getInt(offset + 4) // sId
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, Student entity, int offset) {
-        entity.setSex(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setSId(cursor.getInt(offset + 1));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setAge(cursor.getInt(offset + 2));
+        entity.setSex(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setSId(cursor.getInt(offset + 4));
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(Student entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(Student entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(Student entity) {
-        return null;
+    public Long getKey(Student entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(Student entity) {
-        // TODO
-        return false;
+        return entity.getId() != null;
     }
 
     @Override

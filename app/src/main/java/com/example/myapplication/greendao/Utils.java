@@ -45,6 +45,7 @@ import java.io.InputStream;
 public class Utils {
     /**
      * judge whether is first run app
+     * reference: <a href="https://blog.csdn.net/zhaohuiyang_949/article/details/79048510">...</a>
      * @param context   context
      * @return boolean
      */
