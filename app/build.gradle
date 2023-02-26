@@ -1,6 +1,6 @@
 plugins {
-    id 'com.android.application'
     id 'org.greenrobot.greendao' // apply plugin
+    id 'com.android.application'
 }
 
 android {
@@ -41,9 +41,7 @@ dependencies {
 //配置数据库
 greendao {
     schemaVersion 1 //数据库版本号
-    daoPackage 'com.aserbao.aserbaosandroid.functions.database.greenDao.db'
+    daoPackage 'com.example.myapplication.greendao'
 // 设置DaoMaster、DaoSession、Dao 包名
-    targetGenDir 'src/main/java/com/example/myapplication/greendao'//设置DaoMaster、DaoSession、Dao目录,请注意，这里路径用/不要用.
-    generateTests false //设置为true以自动生成单元测试。
-    targetGenDirTests 'src/androidTest/java/com/example/myapplication' //应存储生成的单元测试的基本目录。默认为 src / androidTest / java。
+    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录,请注意，这里路径用/不要用.
 }
