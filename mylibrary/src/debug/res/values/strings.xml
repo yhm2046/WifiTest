@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="btn_acitviy1_jump">Enter nextActivity</string>
+    <string name="ui_activity2_str_name">Name</string>
+    <string name="ui_activity2_str_sid">Sid</string>
+    <string name="ui_acitvity2_btn_save">save</string>
+</resources>

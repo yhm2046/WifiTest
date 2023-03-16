@@ -1,17 +1,18 @@
 // 在 Project的build.gradle 文件中添加:
 buildscript {
     repositories {
-        mavenCentral() // add repository
+        google()
+//        mavenCentral() // add repository
+        jcenter()
     }
     dependencies {
-        //noinspection GradlePluginVersion
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        //gradle version,用于为 Gradle 构建脚本声明 Android Gradle 插件的依赖项。
+        classpath 'com.android.tools.build:gradle:7.4.0'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0' // add plugin
     }
 }
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+//gradle version,用于声明插件并防止自动应用它们
 plugins {
-    id 'com.android.application' version '7.4.1' apply false
-    id 'com.android.library' version '7.4.1' apply false
+    id 'com.android.application' version '7.3.1' apply false
+    id 'com.android.library' version '7.3.1' apply false
 }
-
